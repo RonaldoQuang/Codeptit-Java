@@ -4,49 +4,47 @@ import java.util.*;
 import java.io.*;
 
 public class J07032_SoThuanNghichTrongFileNhiPhan {
-    static Map<Integer,Integer> mp=new HashMap<>();
-    public static int tn(int n){
-        int res=0;
+    static boolean[] a=new boolean[1000001];
+    public static boolean check(int n){
+        int res=0, m=n;
         while(n!=0){
+            if(n%2==0) return false;
             res=res*10+n%10;
             n/=10;
         }
-        return res;
+        if(res==m) return true;
+        else return false;
     }
     public static void sang(){
-        for(int i=1;i<100;i+=2){
-            if(i%2==1&&tn(i)%2==1){
-                for(int j=1;j<=9;j+=2){
-                    StringBuilder s=new StringBuilder();
-                    s.append(String.valueOf(i)+String.valueOf(j)+String.valueOf(tn(i)));
-                    mp.put(Integer.parseInt(s.toString()),1);
-                }
+        Arrays.fill(a, false);
+        for(int i=100;i<=1000000;i++){
+            if(check(i)){
+                if((i>=100&i<1000)||(i>=10000&&i<1000000)) a[i]=true;
             }
         }
     }
     public static void main(String[] args) throws Exception{
-        Map<Integer,Integer> m=new HashMap<>();
-        Map<Integer,Integer> mp1=new HashMap<>();
-        Map<Integer,Integer> mp2=new HashMap<>();
-        ObjectInputStream ois=new ObjectInputStream(new FileInputStream("DATA1.in"));
-        ArrayList<Integer> a= (ArrayList<Integer>) ois.readObject();
-        for(int x:a){
-            if(mp.getOrDefault(x,0)==1){
-                mp1.put(x,mp1.getOrDefault(x,0)+1);
-            }
+        sang();
+        Map<Integer,Integer> mp=new HashMap<>();
+        Set<Integer> se=new TreeSet<>();
+        ObjectInputStream ois=new ObjectInputStream(new BufferedInputStream(new FileInputStream("DATA1.in")));
+        ArrayList<Integer> a1= (ArrayList<Integer>) ois.readObject();
+        for(int x:a1){
+            if(a[x]) mp.put(x,mp.getOrDefault(x,0)+1);
         }
-        ObjectInputStream ois1=new ObjectInputStream(new FileInputStream("DATA2.in"));
+        ObjectInputStream ois1=new ObjectInputStream(new BufferedInputStream(new FileInputStream("DATA2.in")));
         ArrayList<Integer> b= (ArrayList<Integer>) ois1.readObject();
-        for(int x:a){
-            if(mp.getOrDefault(x,0)==1&&mp1.getOrDefault(x,0)>=1){
-                m.put(x,m.getOrDefault(x,0)+1);
-                mp2.put(x,mp2.getOrDefault(x,0)+1);
+        for(int x:b){
+            if(mp.getOrDefault(x,0)>0){
+                mp.put(x,mp.getOrDefault(x,0)+1);
+                se.add(x);
             }
         }
-        List<Integer> lis=new ArrayList<>(m.keySet());
-        Collections.sort(lis);
-        for(int i=0;i<10;i++){
-            System.out.println(lis.get(i)+" "+(mp1.get(i)+mp2.get(i)));
+        int cnt=0;
+        for(int x:se){
+            ++cnt;
+            System.out.println(x+" "+mp.get(x));
+            if(cnt==10) break;
         }
     }
 }
