@@ -5,9 +5,6 @@ import java.util.*;
 public class J03027_RutGonXauKyTu {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        //int t=sc.nextInt();
-        //sc.nextLine();
-        //while(t-->0){
         StringBuilder s=new StringBuilder(sc.nextLine());
         int i=0;
         while(i<s.length()-1){
@@ -19,6 +16,5 @@ public class J03027_RutGonXauKyTu {
         }
         if(s.length()==0) System.out.println("Empty String");
         else System.out.println(s);
-        //}
     }
 }
